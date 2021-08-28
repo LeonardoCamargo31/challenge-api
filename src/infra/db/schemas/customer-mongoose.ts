@@ -48,8 +48,8 @@ const schema = new mongoose.Schema({
       required: true
     },
     number: {
-      type: String,
-      maxlength: Number,
+      type: Number,
+      integer: true,
       required: true
     },
     neighborhood: {

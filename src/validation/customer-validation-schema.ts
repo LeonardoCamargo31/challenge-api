@@ -9,7 +9,7 @@ export const PhoneValidationSchema = Joi.object({
 export const AddressValidationSchema = Joi.object({
   name: Joi.string().min(1).max(100).required(),
   street: Joi.string().min(1).max(100).required(),
-  number: Joi.string().min(1).max(100).required(),
+  number: Joi.number().min(0).max(10000).required(),
   neighborhood: Joi.string().min(1).max(100).required(),
   city: Joi.string().min(1).max(100).required(),
   state: Joi.string().equal(stateList).required()
@@ -24,6 +24,6 @@ export const CustomerValidationSchema = Joi.object({
   instagram: Joi.string().min(1).max(100),
   twitter: Joi.string().min(1).max(100),
   linkedin: Joi.string().min(1).max(100),
-  address: AddressValidationSchema,
-  phone: PhoneValidationSchema
+  address: Joi.array().items(AddressValidationSchema),
+  phone: Joi.array().items(PhoneValidationSchema)
 })

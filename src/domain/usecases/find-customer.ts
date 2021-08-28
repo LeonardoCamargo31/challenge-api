@@ -9,6 +9,6 @@ export interface IResponseCreateCustomer {
   }
 }
 
-export interface ICreateCustomer {
-  create: (customer: ICustomer) => Promise<IResponseCreateCustomer>
+export interface IFindCustomer {
+  find: (customerId: string) => Promise<IResponseCreateCustomer>
 }

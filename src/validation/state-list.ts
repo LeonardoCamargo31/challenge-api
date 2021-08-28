@@ -107,4 +107,4 @@ export const stateList = [
     value: 'DF',
     name: 'Distrito Federal'
   }
-]
+].map(({ value }) => value)

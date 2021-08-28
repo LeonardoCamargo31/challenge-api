@@ -1,5 +1,5 @@
 import { ICreateCustomer, IResponseCreateCustomer } from '../../domain/usecases/create-customer'
-import { ICustomer } from '../../domain/models/customer'
+import { ICustomer, makeCustomer } from '../../domain/models/customer'
 import { CustomerValidationSchema } from '../../validation/customer-validation-schema'
 import { extractErrors } from '../../utils/extract-errors'
 import { CustomerMongoose } from '../../infra/db/schemas/customer-mongoose'
@@ -17,7 +17,9 @@ export class CreateCustomer implements ICreateCustomer {
       return { success: false, validationErrors }
     }
 
-    await CustomerMongoose.create(customer)
-    return { success: true }
+    const result = await CustomerMongoose.create(customer)
+    const data = makeCustomer(result)
+
+    return { success: true, data }
   }
 }

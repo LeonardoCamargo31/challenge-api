@@ -1,4 +1,5 @@
 export interface ICustomer {
+  id?: string
   name: string
   birthDate: Date
   CPF: string
@@ -12,6 +13,7 @@ export interface ICustomer {
 }
 
 interface IAddress {
+  id?: string
   name: string
   street: string
   number: Number
@@ -21,6 +23,25 @@ interface IAddress {
 }
 
 interface IPhone {
+  id?: string
   name: string
   phone: string
+}
+
+export const makeCustomer = (data: any): ICustomer => {
+  const address = data.address
+  const phone = data.phone
+  return {
+    id: data?._id,
+    name: data?.name,
+    birthDate: data?.birthDate,
+    CPF: data?.CPF,
+    RG: data?.RG,
+    facebook: data?.facebook,
+    instagram: data?.instagram,
+    twitter: data?.twitter,
+    linkedin: data?.linkedin,
+    address: address,
+    phone: phone
+  }
 }
