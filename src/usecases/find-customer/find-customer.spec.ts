@@ -17,15 +17,10 @@ describe('FindCustomer', () => {
       name: 'any_name',
       birthDate: new Date(),
       CPF: 'any_cpf',
-      RG: 'any_rg',
-      phone: [{
-        name: 'any_name',
-        phone: 'any_phone'
-      }]
+      RG: 'any_rg'
     }
 
     customerData = await new CreateCustomer().create(customer)
-    console.log('dddd',customerData)
   })
 
   afterAll(async () => {
