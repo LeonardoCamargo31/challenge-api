@@ -1,19 +1,20 @@
 import { makeApp } from './main/factory'
 import { MongoHelper } from './infra/db/mongo-helper'
 
-const PORT = 3000
-const app = makeApp().app
+const app = makeApp()
+const express = app.express
+const PORT = app.port.toString()
+const ENV = app.env
+const MONGO_URL = app.mongoUrl
 
-MongoHelper.connect(process.env.MONGO_URL)
+MongoHelper.connect(MONGO_URL)
   .then(() => console.log('connected'))
   .catch(console.error)
 
-const serverLocal = app.listen(PORT, () => {
+const server = express.listen(PORT, () => {
   console.log(
-    '  Application is running at http://localhost:%d in %s mode',
-    PORT,
-    app.get('env')
+    `Application is running at port ${PORT} in ${ENV} mode`
   )
 })
 
-export default serverLocal
+export default server

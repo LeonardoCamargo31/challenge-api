@@ -1,11 +1,11 @@
 import { expect } from '@jest/globals'
 import { MongoHelper, MongoHelper as sut } from './mongo-helper'
-import { CustomerMongooseSchema } from '../db/schemas/customer-mongoose-schema'
+import { CustomerMongoose } from '../db/schemas/customer-mongoose'
 
 describe('Mongo Helper', () => {
   beforeAll(async () => {
     await sut.connect(process.env.MONGO_URL)
-    console.log(CustomerMongooseSchema.name)
+    console.log(CustomerMongoose.name)
   })
 
   afterAll(async () => {
