@@ -32,6 +32,7 @@ describe('CreateCustomer', () => {
     expect(result.data.birthDate).toEqual(customer.birthDate)
     expect(result.data.CPF).toEqual(customer.CPF)
     expect(result.data.RG).toEqual(customer.RG)
+    expect(result.data.address).toHaveLength(0)
   })
 
   test('Should return true, if create a new customer with address', async () => {
@@ -55,7 +56,7 @@ describe('CreateCustomer', () => {
     const result = await sut.create(customer)
     const address = customer.address[0]
     expect(result.success).toBeTruthy()
-    expect(result.data.address.length).toBe(1)
+    expect(result.data.address).toHaveLength(1)
     expect(result.data.address[0].city).toEqual(address.city)
     expect(result.data.address[0].state).toEqual(address.state)
     expect(result.data.address[0].name).toEqual(address.name)
@@ -81,7 +82,7 @@ describe('CreateCustomer', () => {
     const result = await sut.create(customer)
     const phone = customer.phone[0]
     expect(result.success).toBeTruthy()
-    expect(result.data.phone.length).toBe(1)
+    expect(result.data.phone).toHaveLength(1)
     expect(result.data.phone[0].name).toEqual(phone.name)
     expect(result.data.phone[0].phone).toEqual(phone.phone)
   })
@@ -100,5 +101,27 @@ describe('CreateCustomer', () => {
     expect(result.success).toBeFalsy()
     expect(result.validationErrors.errorDetail).toEqual({ CPF: ['any.empty', 'string.min'] })
     expect(result.validationErrors.errorFields).toEqual(['CPF'])
+  })
+
+  test('Should return true, if create a new customer with social networks', async () => {
+    const sut = makeSut()
+
+    const customer: ICustomer = {
+      name: 'any_name',
+      birthDate: new Date(),
+      CPF: 'any_cpf',
+      RG: 'any_rg',
+      facebook: 'any_facebook',
+      twitter: 'any_twitter',
+      linkedin: 'any_linkedin',
+      instagram: 'any_instagram'
+    }
+
+    const result = await sut.create(customer)
+    expect(result.success).toBeTruthy()
+    expect(result.data.facebook).toEqual(customer.facebook)
+    expect(result.data.twitter).toEqual(customer.twitter)
+    expect(result.data.linkedin).toEqual(customer.linkedin)
+    expect(result.data.instagram).toEqual(customer.instagram)
   })
 })
