@@ -13,7 +13,6 @@ let customerData
 describe('FindCustomer', () => {
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL)
-
     await CustomerMongoose.deleteMany({})
 
     const customer: ICustomer = {
