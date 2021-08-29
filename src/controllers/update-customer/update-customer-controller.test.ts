@@ -3,7 +3,7 @@ import { makeApp } from '../../main/factory'
 import request from 'supertest'
 const app = makeApp().express
 
-describe('FindCustomerController', () => {
+describe('UpdateCustomerController', () => {
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL)
   })
@@ -13,16 +13,16 @@ describe('FindCustomerController', () => {
   })
 
   const session: request.SuperAgentTest = request.agent(app)
-  test('Should return customer not found', async () => {
+  test('Should return bad request', async () => {
     await session
-      .get('/customer/i')
-      .expect(404)
+      .put('/customer/i')
+      .expect(400)
       .then((res) => {
         expect(res.body.success).toBeFalsy()
       })
   })
 
-  test('Should return customer found', async () => {
+  test('Should create a new customer', async () => {
     await session
       .post('/customer')
       .send({
@@ -35,8 +35,14 @@ describe('FindCustomerController', () => {
       .then(async (res) => {
         const idCustomer = res.body.data.id as string
         await session
-          .get(`/customer/${idCustomer}`)
-          .expect(200)
+          .put(`/customer/${idCustomer}`)
+          .send({
+            name: 'any_name',
+            birthDate: new Date(),
+            CPF: 'any_cpf',
+            RG: 'any_rg'
+          })
+          .expect(201)
           .then((res) => {
             expect(res.body.success).toBeTruthy()
             expect(res.body.data.name).toBe('any_name')

@@ -19,7 +19,6 @@ describe('CreateCustomerController', () => {
       .expect(400)
       .then((res) => {
         expect(res.body.success).toBeFalsy()
-        expect(res.body.validationErrors.errorFields).toEqual(['name', 'birthDate', 'CPF', 'RG'])
       })
   })
 
