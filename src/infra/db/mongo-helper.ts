@@ -25,7 +25,8 @@ export const MongoHelper = {
     return await mongoose.connect(this.uri, {
       keepAlive: true,
       useNewUrlParser: true,
-      useUnifiedTopology: true
+      useUnifiedTopology: true,
+      useFindAndModify: false
     })
   },
 
