@@ -3,6 +3,13 @@
   "exclude": [
     "src/**/*.spec.ts",
     "src/**/*.test.ts",
-    "node_modules"
+    "node_modules",
+    "dist",
+    "coverage",
+    "jest-integration.config.js",
+    "jest-mongodb-config.js",
+    "jest-setup-env.js",
+    "jest-unit.config.js",
+    "jest.config.js"
   ]
 }
