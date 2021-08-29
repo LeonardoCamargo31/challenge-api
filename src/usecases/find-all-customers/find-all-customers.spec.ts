@@ -35,5 +35,7 @@ describe('FindCustomer', () => {
     expect(result.success).toBeTruthy()
     expect(result.data).toHaveLength(1)
     expect(result.data[0].name).toBe(customerData.data.name)
+    expect(result.message).toBe('customers found successfully')
+    expect(result.status).toBe('SUCCESS')
   })
 })

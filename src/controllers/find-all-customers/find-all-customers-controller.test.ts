@@ -35,6 +35,8 @@ describe('FindAllCustomersController', () => {
           .then((res) => {
             expect(res.body.success).toBeTruthy()
             expect(res.body.data).toHaveLength(1)
+            expect(res.body.message).toBe('customers found successfully')
+            expect(res.body.status).toBe('SUCCESS')
           })
       })
   })
@@ -46,6 +48,8 @@ describe('FindAllCustomersController', () => {
       .then((res) => {
         expect(res.body.success).toBeTruthy()
         expect(res.body.data).toHaveLength(0)
+        expect(res.body.message).toBe('customers found successfully')
+        expect(res.body.status).toBe('SUCCESS')
       })
   })
 })
