@@ -13,17 +13,16 @@ describe('CreateCustomerController', () => {
   })
 
   const session: request.SuperAgentTest = request.agent(app)
-  test('Should return bad request', async () => {
+  test('Should return customer not found', async () => {
     await session
-      .post('/customer')
-      .expect(400)
+      .get('/customer/i')
+      .expect(404)
       .then((res) => {
         expect(res.body.success).toBeFalsy()
-        expect(res.body.validationErrors.errorFields).toEqual(['name', 'birthDate', 'CPF', 'RG'])
       })
   })
 
-  test('Should create a new customer', async () => {
+  test('Should return customer found', async () => {
     await session
       .post('/customer')
       .send({
@@ -33,9 +32,15 @@ describe('CreateCustomerController', () => {
         RG: 'any_rg'
       })
       .expect(201)
-      .then((res) => {
-        expect(res.body.success).toBeTruthy()
-        expect(res.body.data.name).toBe('any_name')
+      .then(async (res) => {
+        const idCustomer = res.body.data.id as string
+        await session
+          .get(`/customer/${idCustomer}`)
+          .expect(200)
+          .then((res) => {
+            expect(res.body.success).toBeTruthy()
+            expect(res.body.data.name).toBe('any_name')
+          })
       })
   })
 })
