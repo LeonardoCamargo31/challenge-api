@@ -19,6 +19,8 @@ describe('CreateCustomerController', () => {
       .expect(400)
       .then((res) => {
         expect(res.body.success).toBeFalsy()
+        expect(res.body.message).toBe('invalid data')
+        expect(res.body.status).toBe('INVALID_DATA')
       })
   })
 
@@ -35,6 +37,8 @@ describe('CreateCustomerController', () => {
       .then((res) => {
         expect(res.body.success).toBeTruthy()
         expect(res.body.data.name).toBe('any_name')
+        expect(res.body.message).toBe('customer created successfully')
+        expect(res.body.status).toBe('SUCCESS')
       })
   })
 })

@@ -33,6 +33,8 @@ describe('CreateCustomer', () => {
     expect(result.data.CPF).toEqual(customer.CPF)
     expect(result.data.RG).toEqual(customer.RG)
     expect(result.data.address).toHaveLength(0)
+    expect(result.message).toBe('customer created successfully')
+    expect(result.status).toBe('SUCCESS')
   })
 
   test('Should return true, if create a new customer with address', async () => {
@@ -63,6 +65,8 @@ describe('CreateCustomer', () => {
     expect(result.data.address[0].street).toEqual(address.street)
     expect(result.data.address[0].neighborhood).toEqual(address.neighborhood)
     expect(result.data.address[0].number).toEqual(address.number)
+    expect(result.message).toBe('customer created successfully')
+    expect(result.status).toBe('SUCCESS')
   })
 
   test('Should return true, if create a new customer with phone', async () => {
@@ -85,6 +89,8 @@ describe('CreateCustomer', () => {
     expect(result.data.phone).toHaveLength(1)
     expect(result.data.phone[0].name).toEqual(phone.name)
     expect(result.data.phone[0].phone).toEqual(phone.phone)
+    expect(result.message).toBe('customer created successfully')
+    expect(result.status).toBe('SUCCESS')
   })
 
   test('Should return false, if it has an invalid field', async () => {
@@ -101,6 +107,8 @@ describe('CreateCustomer', () => {
     expect(result.success).toBeFalsy()
     expect(result.validationErrors.errorDetail).toEqual({ CPF: ['any.empty', 'string.min'] })
     expect(result.validationErrors.errorFields).toEqual(['CPF'])
+    expect(result.message).toBe('invalid data')
+    expect(result.status).toBe('INVALID_DATA')
   })
 
   test('Should return true, if create a new customer with social networks', async () => {
@@ -123,5 +131,7 @@ describe('CreateCustomer', () => {
     expect(result.data.twitter).toEqual(customer.twitter)
     expect(result.data.linkedin).toEqual(customer.linkedin)
     expect(result.data.instagram).toEqual(customer.instagram)
+    expect(result.message).toBe('customer created successfully')
+    expect(result.status).toBe('SUCCESS')
   })
 })

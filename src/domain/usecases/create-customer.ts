@@ -1,4 +1,5 @@
 import { ICustomer } from '../models/customer'
+import { Status } from './index'
 
 export interface IResponseCreateCustomer {
   success: boolean
@@ -7,6 +8,8 @@ export interface IResponseCreateCustomer {
     errorDetail: any
     errorFields: any
   }
+  message: string
+  status: Status
 }
 
 export interface ICreateCustomer {

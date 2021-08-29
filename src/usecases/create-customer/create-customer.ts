@@ -4,6 +4,7 @@ import { CustomerValidationSchema } from '../../validation/customer-validation-s
 import { extractErrors } from '../../utils/extract-errors'
 import { CustomerMongoose } from '../../infra/db/schemas/customer-mongoose'
 import Joi from '@hapi/joi'
+import { Status } from '../../domain/usecases'
 
 export class CreateCustomer implements ICreateCustomer {
   async create (customer: ICustomer): Promise<IResponseCreateCustomer> {
@@ -14,12 +15,22 @@ export class CreateCustomer implements ICreateCustomer {
 
     if (joiValidate.error) {
       const validationErrors = extractErrors(joiValidate.error)
-      return { success: false, validationErrors }
+      return {
+        success: false,
+        validationErrors ,
+        message: 'invalid data',
+        status: Status.INVALID_DATA
+      }
     }
 
     const result = await CustomerMongoose.create(customer)
     const data = makeCustomer(result)
 
-    return { success: true, data }
+    return {
+      success: true,
+      data,
+      message: 'customer created successfully',
+      status: Status.SUCCESS
+    }
   }
 }
