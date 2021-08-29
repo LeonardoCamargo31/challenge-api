@@ -3,6 +3,7 @@ import { Router } from 'express'
 import { IController } from '../IController'
 import { IRequest, IResponse } from '../IHttp'
 import { UpdateCustomer } from '../../usecases/update-customer/update-customer'
+import { Status } from '../../domain/usecases'
 
 export class UpdateCustomerController implements IController {
   public router = Router()
@@ -21,9 +22,13 @@ export class UpdateCustomerController implements IController {
     const idCustomer = request.params.idCustomer
     const data = request.body
     const result = await this.updateCustomer.update(idCustomer,data)
-    if (!result.success) {
+
+    if (result.status === Status.INVALID_DATA) {
       return response.status(400).json(result)
+    } else if (result.status === Status.NOT_FOUND) {
+      return response.status(404).json(result)
     }
+
     return response.status(201).json(result)
   }
 }

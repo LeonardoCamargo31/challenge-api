@@ -41,6 +41,8 @@ describe('UpdateCustomer', () => {
     expect(result.success).toBeTruthy()
     expect(result.data.id).toEqual(customerData.data.id)
     expect(result.data.name).toBe(customer.name)
+    expect(result.message).toBe('customer updated successfully')
+    expect(result.status).toBe('SUCCESS')
   })
 
   test('Should return false, if customer id is invalid', async () => {
@@ -55,6 +57,8 @@ describe('UpdateCustomer', () => {
 
     const result = await sut.update('any', customer)
     expect(result.success).toBeFalsy()
+    expect(result.message).toBe('invalid customer id')
+    expect(result.status).toBe('INVALID_DATA')
   })
 
   test('Should return false, if it has an invalid field', async () => {
@@ -71,6 +75,8 @@ describe('UpdateCustomer', () => {
     expect(result.success).toBeFalsy()
     expect(result.validationErrors.errorDetail).toEqual({ CPF: ['any.empty', 'string.min'] })
     expect(result.validationErrors.errorFields).toEqual(['CPF'])
+    expect(result.message).toBe('invalid data')
+    expect(result.status).toBe('INVALID_DATA')
   })
 
   test('Should return false, if do not find a customer', async () => {
@@ -85,5 +91,7 @@ describe('UpdateCustomer', () => {
     const anyId = '507f1f77bcf86cd799439011'
     const result = await sut.update(anyId, customer)
     expect(result.success).toBeFalsy()
+    expect(result.message).toBe('customer not found')
+    expect(result.status).toBe('NOT_FOUND')
   })
 })

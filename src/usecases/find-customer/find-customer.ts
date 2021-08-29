@@ -12,10 +12,19 @@ export class FindCustomer implements IFindCustomer {
 
     const result = await CustomerMongoose.findById(customerId)
     if (!result) {
-      return { success: false, message: 'customer not found', status: Status.NOT_FOUND }
+      return {
+        success: false,
+        message: 'customer not found',
+        status: Status.NOT_FOUND
+      }
     }
 
     const data = makeCustomer(result)
-    return { success: true, data, message: 'customer found successfully', status: Status.SUCCESS }
+    return {
+      success: true,
+      data,
+      message: 'customer found successfully',
+      status: Status.SUCCESS
+    }
   }
 }

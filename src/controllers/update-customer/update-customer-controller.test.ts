@@ -19,6 +19,25 @@ describe('UpdateCustomerController', () => {
       .expect(400)
       .then((res) => {
         expect(res.body.success).toBeFalsy()
+        expect(res.body.message).toBe('invalid customer id')
+        expect(res.body.status).toBe('INVALID_DATA')
+      })
+  })
+
+  test('Should return customer not found', async () => {
+    await session
+      .put('/customer/507f1f77bcf86cd799439011')
+      .send({
+        name: 'any_name',
+        birthDate: new Date(),
+        CPF: 'any_cpf',
+        RG: 'any_rg'
+      })
+      .expect(404)
+      .then((res) => {
+        expect(res.body.success).toBeFalsy()
+        expect(res.body.message).toBe('customer not found')
+        expect(res.body.status).toBe('NOT_FOUND')
       })
   })
 
@@ -46,6 +65,8 @@ describe('UpdateCustomerController', () => {
           .then((res) => {
             expect(res.body.success).toBeTruthy()
             expect(res.body.data.name).toBe('any_name')
+            expect(res.body.message).toBe('customer updated successfully')
+            expect(res.body.status).toBe('SUCCESS')
           })
       })
   })

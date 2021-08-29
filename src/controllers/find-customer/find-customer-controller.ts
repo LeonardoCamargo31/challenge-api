@@ -4,6 +4,7 @@ import { IController } from '../IController'
 import { IRequest, IResponse } from '../IHttp'
 import { FindCustomer } from '../../usecases/find-customer/find-customer'
 import { Status } from '../../domain/usecases'
+
 export class FindCustomerController implements IController {
   public router = Router()
   private readonly findCustomer: FindCustomer
