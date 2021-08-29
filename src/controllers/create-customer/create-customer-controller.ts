@@ -2,11 +2,14 @@
 import { Router } from 'express'
 import { IController } from '../IController'
 import { IRequest, IResponse } from '../IHttp'
+import { CreateCustomer } from '../../usecases/create-customer/create-customer'
 
 export class CreateCustomerController implements IController {
   public router = Router()
+  private readonly createCustomer: CreateCustomer
 
-  constructor () {
+  constructor (createCustomer: CreateCustomer) {
+    this.createCustomer = createCustomer
     this.setupRoutes()
   }
 
@@ -15,8 +18,11 @@ export class CreateCustomerController implements IController {
   }
 
   async handle (request: IRequest, response: IResponse): Promise<IResponse> {
-    return response.status(500).json({
-      message: 'something is wrong!'
-    })
+    const data = request.body
+    const result = await this.createCustomer.create(data)
+    if (!result.success) {
+      return response.status(400).json(result)
+    }
+    return response.status(201).json(result)
   }
 }
