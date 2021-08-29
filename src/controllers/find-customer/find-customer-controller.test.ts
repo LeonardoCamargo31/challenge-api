@@ -1,5 +1,6 @@
 import { MongoHelper } from '../../infra/db/mongo-helper'
 import { makeApp } from '../../main/factory'
+import { CustomerMongoose } from '../../infra/db/schemas/customer-mongoose'
 import request from 'supertest'
 const app = makeApp().express
 
@@ -8,17 +9,34 @@ describe('FindCustomerController', () => {
     await MongoHelper.connect(process.env.MONGO_URL)
   })
 
+  beforeEach(async () => {
+    await CustomerMongoose.deleteMany({})
+  })
+
   afterAll(async () => {
     await MongoHelper.disconnect()
   })
 
   const session: request.SuperAgentTest = request.agent(app)
-  test('Should return customer not found', async () => {
+  test('Should return invalid customer id', async () => {
     await session
       .get('/customer/i')
+      .expect(400)
+      .then((res) => {
+        expect(res.body.success).toBeFalsy()
+        expect(res.body.message).toBe('invalid customer id')
+        expect(res.body.status).toBe('INVALID_DATA')
+      })
+  })
+
+  test('Should return customer not found', async () => {
+    await session
+      .get('/customer/507f1f77bcf86cd799439011')
       .expect(404)
       .then((res) => {
         expect(res.body.success).toBeFalsy()
+        expect(res.body.message).toBe('customer not found')
+        expect(res.body.status).toBe('NOT_FOUND')
       })
   })
 
@@ -40,6 +58,8 @@ describe('FindCustomerController', () => {
           .then((res) => {
             expect(res.body.success).toBeTruthy()
             expect(res.body.data.name).toBe('any_name')
+            expect(res.body.message).toBe('customer found successfully')
+            expect(res.body.status).toBe('SUCCESS')
           })
       })
   })

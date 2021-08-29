@@ -29,9 +29,19 @@ describe('FindCustomer', () => {
 
   test('Should return false, if customer id is invalid', async () => {
     const sut = makeSut()
-
     const result = await sut.find('any')
     expect(result.success).toBeFalsy()
+    expect(result.message).toBe('invalid customer id')
+    expect(result.status).toBe('INVALID_DATA')
+  })
+
+  test('Should return false, if do not find a customer', async () => {
+    const sut = makeSut()
+    const anyId = '507f1f77bcf86cd799439011'
+    const result = await sut.find(anyId)
+    expect(result.success).toBeFalsy()
+    expect(result.message).toBe('customer not found')
+    expect(result.status).toBe('NOT_FOUND')
   })
 
   test('Should return true, if create a new customer', async () => {
@@ -40,5 +50,7 @@ describe('FindCustomer', () => {
     const result = await sut.find(customerData.data.id)
     expect(result.success).toBeTruthy()
     expect(result.data.name).toEqual(customerData.data.name)
+    expect(result.message).toBe('customer found successfully')
+    expect(result.status).toBe('SUCCESS')
   })
 })
